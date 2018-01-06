@@ -1,0 +1,70 @@
+{
+  "manifest_version": 2,
+  "name": "给张大妈盖楼",
+  "version": "0.0.1",
+  "description": "给张大妈盖楼用的一个小扩展程序",
+  "icons":
+  {
+    "16": "icon/icon16.png",
+    "48": "icon/icon48.png",
+    "64": "icon/icon64.png",
+    "128": "icon/icon128.png"
+  },
+
+  // 根据访问页面改变图标状态
+  "page_action":
+  {
+    "default_icon": {
+      "24": "icon/icon24.png",
+      "32": "icon/icon32.png",
+      "16": "icon/icon16.png"
+    },
+    "default_title": "可以盖楼了",
+    "default_popup": "view/popup.html"
+  },
+
+  "content_scripts":
+  [
+    // 注入jquery
+    {
+      "matches":  ["*://*.smzdm.com/*"],
+      "js": ["js/plugin/jquery-3.2.1.min.js"],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    // 注入jquery
+    {
+      "matches": ["*://*.smzdm.com/*"],
+      "js": ["js/main.js"],
+      "run_at": "document_idle"
+    }
+  ],
+  "permissions": [
+    "contextMenus", // 右键菜单
+    "tabs", // 标签
+    "notifications", // 通知
+    "webRequest", // web请求
+    "webRequestBlocking",
+    "storage", // 插件本地存储
+    "declarativeContent", //pageAction权限 chrome.declarativeContent
+    "http://*/*", // 可以通过executeScript或者insertCSS访问的网站
+    "https://*/*" // 可以通过executeScript或者insertCSS访问的网站
+  ],
+
+  // 会一直常驻的后台JS或后台页面(二选一)
+  "background":
+  {
+    "scripts": ["js/background.js"]
+  },
+
+  // 传统配置页
+  "options_page": "view/option.html",
+  // 新版配置页 同时配置覆盖传统设置
+  "options_ui":
+  {
+    "page": "view/option.html",
+    // 添加一些默认的样式，推荐使用
+    "chrome_style": true
+  }
+
+}
